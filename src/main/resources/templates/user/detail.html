@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DETAIL</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+</head>
+<body>
+<div>
+    detail
+    <br/>
+    id : <input id = "detail_user_id" readonly="readonly" /> <br/>
+    username : <input id = "detail_user_username" /> <br/>
+    name : <input id = "detail_user_name" /> <br/>
+    nick : <input id = "detail_user_nick" /> <br/>
+    phone : <input id = "detail_user_phone" /> <br/>
+    <button onclick="update_user()">UPDATE</button>
+    <button onclick="delete_user()">DELETE</button>
+
+    <script>
+
+        let tempUrl = window.location.href;
+        let tempId = tempUrl.substring(tempUrl.lastIndexOf("/")+1);
+        let arrayTempId = tempId.split("?");
+        if(arrayTempId.length > 1) {
+            tempId = arrayTempId[0];
+        }
+
+        $( document ).ready(function() {
+            detail_user();
+        });
+
+        function detail_user(){
+            let _param = {
+                id : tempId
+            };
+
+            $.ajax({
+                url: "/api/user",
+                type: "GET",
+                contentType : 'application/json; charset=utf-8',
+                data: _param,
+                cache: false,
+                success: (obj_data, status, xhr)=>{
+                    alert(JSON.stringify(obj_data));
+
+
+                    /*$("#detail_user_username").val(obj_data["username"]);
+                    $("#detail_user_name").val(obj_data["name"]);
+                    $("#detail_user_nick").val(obj_data["nick"]);
+                    $("#detail_user_phone").val(obj_data["phone"]);*/
+
+                    let arrayKey2 = Object.keys(obj_data);
+                    let arrayKey = ["id", "username", "name", "nick", "phone"];
+                    for(let each of arrayKey) {
+                        $("#detail_user_" + each).val(obj_data[each]);
+                    }
+                },
+                error: (obj_data, status, xhr)=>{
+                    alert("error!!");
+                    alert(JSON.stringify(obj_data));
+                }
+            });
+        }
+        function update_user(){
+            let _param = {
+                id : $("#detail_user_id").val()
+            };
+
+            let arrayKey = ["username", "name", "nick", "phone"];
+            for(let each of arrayKey) {
+                _param[each] = $("#detail_user_" + each).val();
+            }
+
+            $.ajax({
+                url: "/api/user",
+                type: "PUT",
+                contentType : 'application/json; charset=utf-8',
+                data: JSON.stringify(_param),
+                cache: false,
+                success: (obj_data, status, xhr)=>{
+                    alert(JSON.stringify(obj_data));
+                },
+                error: (obj_data, status, xhr)=>{
+                    alert("error!!");
+                    alert(JSON.stringify(obj_data));
+                }
+            });
+        }
+        function delete_user(){
+            $.ajax({
+                url: "/api/user",
+                type: "DELETE",
+                contentType : 'application/json; charset=utf-8',
+                data: $("#detail_user_id").val(),
+                cache: false,
+                success: (obj_data, status, xhr)=>{
+                    alert(JSON.stringify(obj_data));
+                },
+                error: (obj_data, status, xhr)=>{
+                    alert("error!!");
+                    alert(JSON.stringify(obj_data));
+                }
+            });
+        }
+    </script>
+
+
+</div>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DETAIL</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+</head>
+<body>
+<div>
+    DETAIL
+
+    id :
+    <input type="text" id="detail_post_id" />
+    title :
+    <input type="text" id="detail_post_title" />
+    content :
+    <input type="text" id="detail_post_content" />
+
+    <button onclick="detail_post()">DETAIL</button>
+    <button onclick="update_post()">UPDATE</button>
+    <button onclick="delete_post()">DELETE</button>
+
+    <script>
+        function detail_post(){
+            let id = $("#detail_post_id").val();
+
+            $.ajax({
+                url: "/api/post/detail",
+                type: "GET",
+                data: {
+                    id : id
+                },
+                cache: false,
+                success: (obj_data, status, xhr)=>{
+                    alert(JSON.stringify(obj_data));
+                    $("#detail_post_id").val(obj_data["id"]);
+                    $("#detail_post_title").val(obj_data["title"]);
+                    $("#detail_post_content").val(obj_data["content"]);
+                },
+                error: (obj_data, status, xhr)=>{
+                    alert("error!!");
+                    alert(JSON.stringify(obj_data));
+                }
+            });
+        }
+        function update_post(){
+            let id = $("#detail_post_id").val();
+            let title = $("#detail_post_title").val();
+            let content = $("#detail_post_content").val();
+
+            $.ajax({
+                url: "/api/post/update",
+                type: "GET",
+                data: {
+                    id : id
+                    , title : title
+                    , content : content
+                },
+                cache: false,
+                success: (obj_data, status, xhr)=>{
+                    alert(JSON.stringify(obj_data));
+                },
+                error: (obj_data, status, xhr)=>{
+                    alert("error!!");
+                    alert(JSON.stringify(obj_data));
+                }
+            });
+        }
+        function delete_post(){
+            let id = $("#detail_post_id").val();
+
+            $.ajax({
+                url: "/api/post/delete",
+                type: "GET",
+                data: {
+                    id : id
+                },
+                cache: false,
+                success: (obj_data, status, xhr)=>{
+                    alert(JSON.stringify(obj_data));
+                },
+                error: (obj_data, status, xhr)=>{
+                    alert("error!!");
+                    alert(JSON.stringify(obj_data));
+                }
+            });
+        }
+    </script>
+
+
+</div>
+</body>
+</html>

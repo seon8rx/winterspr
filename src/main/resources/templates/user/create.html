@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CREATE</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+</head>
+<body>
+<div>
+    create
+
+    username :
+    <input type="text" id="create_user_username" />
+    password :
+    <input type="text" id="create_user_password" />
+    name :
+    <input type="text" id="create_user_name" />
+    nick :
+    <input type="text" id="create_user_nick" />
+    phone :
+    <input type="text" id="create_user_phone" />
+
+    <button onclick="create_user()">CREATE</button>
+
+    <script>
+        function create_user(){
+            let _param = {
+                username : $("#create_user_username").val(),
+                password : $("#create_user_password").val(),
+                name : $("#create_user_name").val(),
+                nick : $("#create_user_nick").val(),
+                phone : $("#create_user_phone").val()
+            };
+
+            $.ajax({
+                url: "/api/user",
+                type: "POST",
+                contentType : 'application/json; charset=utf-8',
+                data: JSON.stringify(_param),
+                cache: false,
+                success: (obj_data, status, xhr)=>{
+                    if(obj_data === -200){
+                        alert("사용자 아이디가 중복입니다.");
+                    } else {
+                        alert("회원 가입 성공.");
+                        location.reload();
+                    }
+                    //alert(JSON.stringify(obj_data));
+                },
+                error: (obj_data, status, xhr)=>{
+                    alert("error!!");
+                    alert(JSON.stringify(obj_data));
+                }
+            });
+        }
+    </script>
+
+
+</div>
+</body>
+</html>
